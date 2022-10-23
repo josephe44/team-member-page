@@ -91,6 +91,7 @@ img {
 .pagination-child,
 .prev,
 .next {
+  opacity: 1;
   border: 1px solid #000;
   padding: 4px 8px;
   cursor: pointer;
@@ -106,5 +107,5 @@ img {
 
 .disabled {
   opacity: 0.5;
-  pointer-events: none;
+  cursor: not-allowed;
 }

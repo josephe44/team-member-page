@@ -1,29 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Pagination({ numberOfPages, currentPage, setCurrentPage }) {
-  const [disabled, setDisabled] = useState(false);
+  const [disabledPrev, setDisabledPrev] = useState(true);
+  const [disabledNext, setDisabledNext] = useState(true);
+
   const pageNum = [...Array(numberOfPages + 1).keys()].slice(1);
 
   const prevPage = () => {
     if (currentPage !== 1) {
       setCurrentPage(currentPage - 1);
-    } else {
-      setDisabled(true);
     }
   };
 
   const nextPage = () => {
     if (currentPage !== numberOfPages) {
       setCurrentPage(currentPage + 1);
-    } else {
-      setDisabled(true);
     }
   };
+
+  useEffect(() => {
+    if (currentPage > 1) {
+      setDisabledPrev(false);
+    } else {
+      setDisabledPrev(true);
+    }
+
+    if (currentPage === numberOfPages) {
+      setDisabledNext(true);
+    } else {
+      setDisabledNext(false);
+    }
+  }, [currentPage, numberOfPages]);
 
   return (
     <div>
       <section className="pagination">
-        <div className={dis}>
+        <div className={disabledPrev ? "disabled" : "prev"}>
           <p onClick={prevPage}>Previous</p>
         </div>
         <div className="pagination-num">
@@ -38,7 +50,7 @@ function Pagination({ numberOfPages, currentPage, setCurrentPage }) {
             </div>
           ))}
         </div>
-        <div className="next">
+        <div className={disabledNext ? "disabled" : "next"}>
           <p onClick={nextPage}>Next</p>
         </div>
       </section>

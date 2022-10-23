@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
 import { Pagination, User, Spinner } from "../components";
+import ErrorBoundary from "../components/ErrorBoundaries";
 
 function Home() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage] = useState(5);
+  const [usersPerPage] = useState(4);
 
   // get users from the randomuser api
   useEffect(() => {
     const fetchUsers = async () => {
-      const res = await fetch("https://randomuser.me/api/?results=50");
+      const res = await fetch("https://randomuser.me/api/?results=20");
       const data = await res.json();
       setUsers(data.results);
       setLoading(false);
@@ -37,12 +38,16 @@ function Home() {
         <h2>Home</h2>
       </div>
       <div>
-        <User currentUsers={currentUsers} />
-        <Pagination
-          numberOfPages={numberOfPages}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+        <ErrorBoundary>
+          <User currentUsers={currentUsers} />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Pagination
+            numberOfPages={numberOfPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </ErrorBoundary>
       </div>
     </section>
   );
